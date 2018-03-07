@@ -1,22 +1,33 @@
 var path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: {
+    app: './src/index.js'
+  },
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'dist'),  // 物理输出路径
+    publicPath: '/', // 公共路径，插入html中的js、css、以及css中引用的图片的路径，就是相对于这个路径。
   },
   devtool: 'inline-source-map',
   module: {
     rules: [
+      // {
+      //   test: /\.css$/,
+      //   use: [
+      //     'style-loader',
+      //     'css-loader'
+      //   ]
+      // },
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader']
+        })
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/,
@@ -24,7 +35,7 @@ module.exports = {
           {
             loader: 'url-loader',
             options: {
-              limit: 10000,
+              limit: 1000,
               name: 'images/[name].[hash:7].[ext]'
             }
           }
@@ -58,6 +69,10 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
+    new ExtractTextPlugin({
+      filename: 'css/[name].[contenthash].css',
+      allChunks: true
+    }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: './src/index.html',

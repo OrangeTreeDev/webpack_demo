@@ -1,3 +1,3 @@
 export function printError() {
-  consonle.log('a misinput occur!');
+  // consonle.log('a misinput occur!');
 }
