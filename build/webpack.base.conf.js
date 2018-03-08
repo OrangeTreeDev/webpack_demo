@@ -1,8 +1,5 @@
 var path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -10,28 +7,17 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'dist'),  // 物理输出路径
+    path: path.resolve(__dirname, '../dist'),  // 物理输出路径
     publicPath: '/', // 公共路径，插入html中的js、css、以及css中引用的图片的路径，就是相对于这个路径。
-  },
-  // devtool: '#source-map',
-  devServer: {
-    port: 3001,
   },
   module: {
     rules: [
-      // {
-      //   test: /\.css$/,
-      //   use: [
-      //     'style-loader',
-      //     'css-loader'
-      //   ]
-      // },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader']
-        })
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/,
@@ -72,20 +58,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
-    new ExtractTextPlugin({
-      filename: 'css/[name].[contenthash].css',
-      allChunks: true
-    }),
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        compress: {
-          warnings: false
-        }
-      },
-      sourceMap: true,
-      parallel: true
-    }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: './src/index.html',
