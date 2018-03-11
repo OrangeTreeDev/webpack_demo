@@ -7,11 +7,25 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = merge(baseWebpackConfig, {
   devtool: '#source-map',
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader']
+        })
+      }
+    ]
+  },
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new ExtractTextPlugin({
       filename: 'css/[name].[contenthash].css',
       allChunks: true
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production')
     }),
     new UglifyJsPlugin({
       uglifyOptions: {

@@ -7,15 +7,23 @@ module.exports = merge(baseWebpackConfig, {
   devServer: {
     port: 3001,
   },
+  devServer: {
+    contentBase: '../dist' 
+  },
   module: {
     rules: [
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader']
-        })
-      },
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
     ]
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('dev')
+    })
+  ]
 });

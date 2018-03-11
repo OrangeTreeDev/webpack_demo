@@ -13,6 +13,11 @@ function component() {
     return element;
 }
 
+// 在非生产环境的时候，输入额外信息方便debug
+if (process.env.NODE_ENV !== 'production') {
+    console.log('debug');
+}
+
 document.body.appendChild(component());
 
 // if (module.hot) {
