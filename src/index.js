@@ -1,14 +1,15 @@
 import _ from 'lodash';
 import './main.css';
 import { printError } from './print.js';
-import { cube } from './math.js';
 
 function component() {
     var element = document.createElement('div');
     element.className = 'app';
-    // 通过import引入外部依赖
-    let txt = _.join(['Hello', 'webpack'], ' ');
-    element.innerHTML = txt + cube(5);
+    // 通过import()动态引入外部依赖
+    import('./math.js').then(math => {
+      let txt = _.join(['Hello', 'webpack'], ' ');
+      element.innerHTML = txt + math.cube(5);
+    });
     element.onclick = printError;
     return element;
 }

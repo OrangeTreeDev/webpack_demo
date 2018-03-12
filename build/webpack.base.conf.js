@@ -3,10 +3,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: './src/index.js'
+    app: './src/index.js',
+    // another: './src/another.js',
   },
   output: {
-    filename: '[name].js',
+    filename: 'js/[name].[chunkhash].js',
+    chunkFilename: 'js/[id].[chunkhash].js',
     path: path.resolve(__dirname, '../dist'),  // 物理输出路径
     publicPath: '/', // 公共路径，插入html中的js、css、以及css中引用的图片的路径，就是相对于这个路径。
   },

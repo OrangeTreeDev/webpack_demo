@@ -19,7 +19,9 @@ module.exports = merge(baseWebpackConfig, {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin(['dist'], {
+      root: process.cwd()
+    }),
     new ExtractTextPlugin({
       filename: 'css/[name].[contenthash].css',
       allChunks: true
@@ -35,6 +37,9 @@ module.exports = merge(baseWebpackConfig, {
       },
       sourceMap: true,
       parallel: true
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'common'
     })
   ]
 });
